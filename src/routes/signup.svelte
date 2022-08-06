@@ -17,11 +17,11 @@
 <div class="flex flex-col flex-auto h-full">
 	<div class="flex flex-col flex-auto items-center sm:justify-center min-w-0 md:p-8">
 		<div
-			class="flex md:w-full md:max-w-6xl sm:rounded-2xl sm:shadow overflow-hidden sm:bg-white dark:sm:bg-[#1e293b]"
+			class="flex md:w-full md:max-w-6xl sm:rounded-2xl sm:shadow overflow-hidden sm:bg-white dark:sm:bg-[#1d293c]"
 		>
 			<!-- Introduction -->
 			<div
-				class="relative hidden md:flex flex-auto items-center justify-center h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:border-r "
+				class="relative hidden md:flex flex-auto items-center justify-center h-full p-16 lg:px-28 overflow-hidden bg-gray-800 dark:bg-[#1d293c] dark:border-r dark:border-r-white/10 "
 			>
 				<svg
 					viewBox="0 0 960 540"

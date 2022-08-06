@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
+
 	import { fly } from 'svelte/transition'
 	import * as yup from 'yup'
 	import logo from '../assets/img/logo.svg'
@@ -26,6 +28,8 @@
 			})
 
 			loading = true
+
+			goto('/panel/dashboard')
 		} catch (error: any) {
 			errors = error.inner.reduce((p: any, c: any) => {
 				p[c.path] = c.message
@@ -59,7 +63,7 @@
 		<input
 			type="text"
 			id="email"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			use:focus
 			bind:value={values.email}
 			class:focus:border-blue-500={!('email' in errors)}
@@ -82,7 +86,7 @@
 		<input
 			type="password"
 			id="password"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			bind:value={values.password}
 			class:focus:border-blue-500={!('password' in errors)}
 			class:border-red-500={'password' in errors}
@@ -116,14 +120,14 @@
 	</div>
 
 	<div class="flex items-center mb-8">
-		<div class="flex-auto border-t" />
+		<div class="flex-auto border-t dark:border-t-white/10" />
 		<div class="mx-2 text-gray-500">Or continue with</div>
-		<div class="flex-auto border-t" />
+		<div class="flex-auto border-t dark:border-t-white/10" />
 	</div>
 
-	<div class="flex items-center space-x-4">
+	<div class="flex items-center space-x-4 rtl:space-x-reverse">
 		<div
-			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100"
+			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100 dark:text-white dark:hover:opacity-75 dark:hover:btn-success"
 		>
 			<svg
 				x="48"
@@ -146,7 +150,7 @@
 			</svg>
 		</div>
 		<div
-			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100"
+			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100 dark:text-white dark:hover:opacity-75 dark:hover:btn-success"
 		>
 			<svg
 				x="432"
@@ -169,7 +173,7 @@
 			</svg>
 		</div>
 		<div
-			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100"
+			class="flex-auto btn btn-outline rounded-3xl w-full h-10 mx-0 opacity-50 hover:opacity-100 dark:text-white dark:hover:opacity-75 dark:hover:btn-success"
 		>
 			<svg
 				x="1056"

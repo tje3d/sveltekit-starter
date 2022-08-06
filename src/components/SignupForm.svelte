@@ -62,7 +62,7 @@
 		<input
 			type="text"
 			id="fullname"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			use:focus
 			bind:value={values.fullname}
 			class:focus:border-blue-500={!('fullname' in errors)}
@@ -85,7 +85,7 @@
 		<input
 			type="email"
 			id="email"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			bind:value={values.email}
 			class:focus:border-blue-500={!('email' in errors)}
 			class:border-red-500={'email' in errors}
@@ -107,7 +107,7 @@
 		<input
 			type="password"
 			id="password"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			bind:value={values.password}
 			class:focus:border-blue-500={!('password' in errors)}
 			class:border-red-500={'password' in errors}
@@ -126,7 +126,7 @@
 		<input
 			type="text"
 			id="company"
-			class="w-full rounded border border-gray-300 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
+			class="w-full rounded border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem]"
 			bind:value={values.company}
 			class:focus:border-blue-500={!('company' in errors)}
 			class:border-red-500={'company' in errors}
