@@ -1,3 +1,4 @@
+import BlocLoader from './BlocLoader'
 import DayjsLoader from './DayjsLoader'
 import ServiceLoader from './ServiceLoader'
 
@@ -7,4 +8,7 @@ export default async () => {
 
 	console.log('Loader', 'Loading Dayjs')
 	await DayjsLoader()
+
+	console.log('Loader', 'Loading BloC')
+	await BlocLoader()
 }
