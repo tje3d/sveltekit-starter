@@ -1,5 +1,3 @@
-const daisyui = require('daisyui')
-
 const config = {
 	mode: 'jit',
 
@@ -11,7 +9,11 @@ const config = {
 		extend: {}
 	},
 
-	plugins: [daisyui]
+	plugins: [require('daisyui'), require('tailwindcss-flip'), require('tailwindcss-dir')()],
+
+	daisyui: {
+		rtl: false
+	}
 }
 
 module.exports = config
