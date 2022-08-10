@@ -45,7 +45,7 @@
 			</label>
 			<ul
 				tabindex="0"
-				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white rounded-box w-52"
+				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white dark:bg-[#1d293c] rounded-box w-52"
 			>
 				<li><a>Homepage</a></li>
 				<li><a>Portfolio</a></li>
@@ -120,12 +120,12 @@
 		<div class="dropdown dropdown-end ml-2">
 			<label tabindex="0" class="btn btn-ghost btn-circle avatar">
 				<div class="w-8 rounded-full">
-					<img src="https://placeimg.com/80/80/people" />
+					<img src="https://placeimg.com/80/80/people" alt="Avatar" />
 				</div>
 			</label>
 			<ul
 				tabindex="0"
-				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white rounded-box w-52"
+				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white dark:bg-[#1d293c] rounded-box w-52"
 			>
 				<li>
 					<a class="justify-between">

@@ -6,7 +6,7 @@
 <div class="flex h-full w-full">
 	<Sidebar />
 
-	<div class="flex-auto pl-72">
+	<div class="flex-auto md:pl-72">
 		<Navbar />
 
 		<slot />

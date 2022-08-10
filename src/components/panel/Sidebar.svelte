@@ -16,7 +16,9 @@
 	import SidebarItemDivider from './SidebarItemDivider.svelte'
 </script>
 
-<div class="fixed ltr:left-0 rtl:right-0 top-0 bottom-0 w-72 bg-[#3830a3] flex flex-col">
+<div
+	class="fixed ltr:-left-full rtl:-right-full md:ltr:left-0 md:rtl:right-0 top-0 bottom-0 w-72 bg-[#3830a3] flex flex-col z-10"
+>
 	<!-- Header - Start -->
 	<div class="flex items-center h-20 p-6 pb-0">
 		<img src={logo} class="w-32" alt="Logo" />
@@ -208,7 +210,7 @@
 
 			<ul
 				tabindex="0"
-				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white rounded-box w-52"
+				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white dark:bg-[#1d293c] rounded-box w-52"
 			>
 				<li>
 					<a class="justify-between">
