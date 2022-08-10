@@ -1,6 +1,8 @@
 <script lang="ts">
-	import IconSettings from '~icons/mdi/cog'
-	import IconExport from '~icons/mdi/export'
+	import IconExport from '~icons/heroicons-outline/cloud-download'
+	import IconSettings from '~icons/heroicons-outline/cog'
+	import IconTrendDown from '~icons/heroicons-outline/trending-down'
+	import IconTrendUp from '~icons/heroicons-outline/trending-up'
 </script>
 
 <div class="w-full max-w-screen-xl mx-auto px-6 xl:px-0">
@@ -62,24 +64,9 @@
 					<div class="flex flex-col">
 						<div class="text-2xl font-semibold tracking-tight leading-tight">$17,663.00</div>
 						<div class="flex items-center space-x-2">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-								height="100%"
-								width="100%"
-								preserveAspectRatio="xMidYMid meet"
-								focusable="false"
-								class="w-5 h-5 text-green-500"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
-									clip-rule="evenodd"
-								/>
-							</svg>
+							<IconTrendDown class="w-5 h-5 text-red-500" />
 							<div class="font-medium text-xs text-gray-500 leading-none whitespace-nowrap">
-								<span class="text-green-500">2%</span> above projected
+								<span class="text-red-500">2%</span> above projected
 							</div>
 						</div>
 					</div>
@@ -98,22 +85,7 @@
 					<div class="flex flex-col">
 						<div class="text-2xl font-semibold tracking-tight leading-tight">$17,663.00</div>
 						<div class="flex items-center space-x-2">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-								height="100%"
-								width="100%"
-								preserveAspectRatio="xMidYMid meet"
-								focusable="false"
-								class="w-5 h-5 text-green-500"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
-									clip-rule="evenodd"
-								/>
-							</svg>
+							<IconTrendUp class="w-5 h-5 text-green-500" />
 							<div class="font-medium text-xs text-gray-500 leading-none whitespace-nowrap">
 								<span class="text-green-500">2%</span> above projected
 							</div>
@@ -134,24 +106,9 @@
 					<div class="flex flex-col">
 						<div class="text-2xl font-semibold tracking-tight leading-tight">$17,663.00</div>
 						<div class="flex items-center space-x-2">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20"
-								fill="currentColor"
-								height="100%"
-								width="100%"
-								preserveAspectRatio="xMidYMid meet"
-								focusable="false"
-								class="w-5 h-5 text-green-500"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
-									clip-rule="evenodd"
-								/>
-							</svg>
+							<IconTrendDown class="w-5 h-5 text-red-500" />
 							<div class="font-medium text-xs text-gray-500 leading-none whitespace-nowrap">
-								<span class="text-green-500">2%</span> above projected
+								<span class="text-red-500">2%</span> above projected
 							</div>
 						</div>
 					</div>
