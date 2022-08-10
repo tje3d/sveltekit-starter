@@ -9,13 +9,3 @@ img {
 * {
 	overscroll-behavior: contain;
 }
-
-// Sidebar - Start
-.sidebar {
-	&--close {
-		[dir='ltr'] {
-			left: 0 !important;
-		}
-	}
-}
-// Sidebar - End
