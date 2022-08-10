@@ -6,13 +6,11 @@
 </script>
 
 <div class="w-full max-w-screen-xl mx-auto px-6 xl:px-0">
-	<div class="flex items-center p-6 md:p-8">
-		<div class="flex items-center justify-between w-full">
-			<div>
-				<div class="text-3xl font-semibold tracking-tight leading-8 mb-1">Analytics dashboard</div>
-				<div class="font-light tracking-tight text-gray-500">
-					Monitor metrics, check reports and review performance
-				</div>
+	<div class="flex items-center py-6 md:py-8">
+		<div class="flex-auto">
+			<div class="text-3xl font-semibold tracking-tight leading-8 mb-1">Analytics dashboard</div>
+			<div class="font-light tracking-tight text-gray-500">
+				Monitor metrics, check reports and review performance
 			</div>
 		</div>
 
