@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onDestroy } from 'svelte'
+	import Container from 'typedi'
 	import IconContact from '~icons/mdi/account-group-outline'
 	import IconBitcoin from '~icons/mdi/bitcoin'
 	import IconTask from '~icons/mdi/calendar-check-outline'
@@ -13,11 +15,36 @@
 	import IconAcademy from '~icons/mdi/school-outline'
 	import logo from '../../assets/img/logo-text.svg'
 	import male1 from '../../assets/img/male-1.jpeg'
+	import { SidebarBloc, SidebarClose } from '../../bloc/SidebarBloc'
 	import SidebarItemDivider from './SidebarItemDivider.svelte'
+
+	const sidebarBloc = Container.get(SidebarBloc)
+
+	let state = sidebarBloc.state
+	let sidebarSub = sidebarBloc.listen((newState) => (state = newState))
+
+	onDestroy(() => {
+		sidebarSub.unsubscribe()
+	})
+
+	function onBackdropClick() {
+		sidebarBloc.add(new SidebarClose())
+	}
 </script>
 
+{#if state.isOpen}
+	<div
+		class="bg-black bg-opacity-50 fixed top-0 right-0 bottom-0 left-0 z-40 md:hidden"
+		on:click={onBackdropClick}
+	/>
+{/if}
+
 <div
-	class="fixed ltr:-left-full rtl:-right-full md:ltr:left-0 md:rtl:right-0 top-0 bottom-0 w-72 bg-[#3830a3] flex flex-col z-10"
+	class="sidebar fixed top-0 bottom-0 w-72 bg-[#3830a3] flex flex-col z-50"
+	class:ltr:-left-full={!state.isOpen}
+	class:rtl:-right-full={!state.isOpen}
+	class:ltr:left-0={state.isOpen}
+	class:rtl:right-0={state.isOpen}
 >
 	<!-- Header - Start -->
 	<div class="flex items-center h-20 p-6 pb-0">

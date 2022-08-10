@@ -1,6 +1,7 @@
 import { browser } from '$app/env'
 import Container from 'typedi'
 import { AuthBloc, AuthState, AuthUserUpdate } from '../bloc/AuthBloc'
+import { SidebarBloc, SidebarClose, SidebarState } from '../bloc/SidebarBloc'
 import { ThemeBloc, ThemeDark, ThemeLight, ThemeLTR, ThemeRTL, ThemeState } from '../bloc/ThemeBloc'
 import User from '../models/UserModel'
 
@@ -11,6 +12,7 @@ export default async function () {
 
 	await authBlocInit()
 	await themeBlocInit()
+	await sidebarBlocInit()
 }
 
 async function authBlocInit() {
@@ -90,4 +92,17 @@ async function themeBlocInit() {
 			localStorage.removeItem('dir')
 		}
 	})
+}
+
+async function sidebarBlocInit() {
+	console.log('Loading SidebarBloc')
+
+	const sidebarBloc = new SidebarBloc(SidebarState.new())
+
+	// Set Default State
+	if (window.innerWidth <= 960) {
+		sidebarBloc.add(new SidebarClose())
+	}
+
+	Container.set(SidebarBloc, sidebarBloc)
 }

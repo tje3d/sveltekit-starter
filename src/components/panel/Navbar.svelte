@@ -1,25 +1,33 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte'
 	import Container from 'typedi'
+	import { SidebarBloc, SidebarToggle } from '../../bloc/SidebarBloc'
 	import { ThemeBloc, ThemeLTR, ThemeRTL, ThemeToggle } from '../../bloc/ThemeBloc'
 
 	const themeBloc = Container.get(ThemeBloc)
+	const sidebarBloc = Container.get(SidebarBloc)
 
-	let state = themeBloc.state
-	let themeSub = themeBloc.listen((newState) => {
-		state = newState
-	})
+	let themeState = themeBloc.state
+	let themeSub = themeBloc.listen((newState) => (themeState = newState))
+
+	let sidebarState = sidebarBloc.state
+	let sidebarSub = sidebarBloc.listen((newState) => (sidebarState = newState))
 
 	function toggleDir() {
-		themeBloc.add(state.dir === 'ltr' ? new ThemeRTL() : new ThemeLTR())
+		themeBloc.add(themeState.dir === 'ltr' ? new ThemeRTL() : new ThemeLTR())
 	}
 
 	function toggleTheme() {
 		themeBloc.add(new ThemeToggle())
 	}
 
+	function sidebarToggle() {
+		sidebarBloc.add(new SidebarToggle())
+	}
+
 	onDestroy(() => {
 		themeSub.unsubscribe()
+		sidebarSub.unsubscribe()
 	})
 </script>
 
@@ -27,43 +35,34 @@
 	class="navbar bg-white px-4 shadow-sm dark:bg-[#0f172a] dark:border-b border-b-white/10 dark:text-[#94a2b8]"
 >
 	<div class="navbar-start">
-		<div class="dropdown">
-			<label tabindex="0" class="btn btn-ghost btn-circle">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-5 w-5"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					><path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h16M4 18h7"
-					/>
-				</svg>
-			</label>
-			<ul
-				tabindex="0"
-				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-white dark:bg-[#1d293c] rounded-box w-52"
-			>
-				<li><a>Homepage</a></li>
-				<li><a>Portfolio</a></li>
-				<li><a>About</a></li>
-			</ul>
-		</div>
+		<button tabindex="0" class="btn btn-ghost btn-circle" on:click={sidebarToggle}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				><path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16M4 18h7"
+				/>
+			</svg>
+		</button>
 	</div>
+
 	<div class="navbar-end">
 		<button class="btn btn-ghost btn-circle" on:click={toggleDir}>
 			<label class="swap">
-				<input type="checkbox" on:click={toggleDir} checked={state.dir === 'ltr'} />
+				<input type="checkbox" on:click={toggleDir} checked={themeState.dir === 'ltr'} />
 				<div class="swap-on">LTR</div>
 				<div class="swap-off">RTL</div>
 			</label>
 		</button>
 		<button class="btn btn-ghost btn-circle" on:click={toggleTheme}>
 			<label class="swap swap-rotate">
-				<input type="checkbox" on:change={toggleTheme} checked={state.theme === 'dark'} />
+				<input type="checkbox" on:change={toggleTheme} checked={themeState.theme === 'dark'} />
 
 				<svg
 					class="swap-on fill-current w-5 h-5"
