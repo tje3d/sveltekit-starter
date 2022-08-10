@@ -32,11 +32,11 @@
 
 	<div class="grid grid-cols-1 sm:grid-cols-6 gap-6 w-full min-w-0 mx-auto">
 		<div
-			class="sm:col-span-6 flex flex-col flex-auto bg-[#1e293b] shadow rounded-2xl overflow-hidden"
+			class="sm:col-span-6 flex flex-col flex-auto bg-[#1e293b] shadow rounded-2xl overflow-hidden min-h-[25rem]"
 		>
-			<div class="flex items-center justify-between mt-10 ml-10 mr-6 sm:mr-10">
+			<div class="flex items-center justify-between mt-10 ml-10 mx-6 sm:mx-10">
 				<div class="flex flex-col">
-					<div class="mr-4 text-2xl md:text-3xl font-semibold tracking-tight leading-7 text-white">
+					<div class="text-2xl md:text-3xl font-semibold tracking-tight leading-7 text-white">
 						Visitors Overview
 					</div>
 					<div class="font-medium text-gray-500">Number of unique visitors</div>

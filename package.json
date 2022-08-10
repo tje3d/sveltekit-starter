@@ -15,7 +15,6 @@
 		"@felangel/bloc": "^0.3.0",
 		"@iconify-json/heroicons-outline": "^1.1.2",
 		"@iconify-json/heroicons-solid": "^1.1.2",
-		"@iconify-json/mdi": "^1.1.29",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "1.0.0-next.85",
 		"@sveltejs/adapter-static": "1.0.0-next.38",

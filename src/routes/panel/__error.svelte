@@ -1,0 +1,7 @@
+<script lang="ts">
+	import Err from '../../components/errors/404.svelte'
+</script>
+
+<Err>
+	<a slot="link" class="mt-12 font-medium underline text-blue-500" href="/"> Back to Dashboard </a>
+</Err>

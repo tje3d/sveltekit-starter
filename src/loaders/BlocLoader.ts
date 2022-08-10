@@ -1,7 +1,8 @@
 import { browser } from '$app/env'
 import Container from 'typedi'
+import { sidebarData } from '../assets/data/SidebarData'
 import { AuthBloc, AuthState, AuthUserUpdate } from '../bloc/AuthBloc'
-import { SidebarBloc, SidebarClose, SidebarState } from '../bloc/SidebarBloc'
+import { SidebarBloc, SidebarClose, SidebarItemsSet, SidebarState } from '../bloc/SidebarBloc'
 import { ThemeBloc, ThemeDark, ThemeLight, ThemeLTR, ThemeRTL, ThemeState } from '../bloc/ThemeBloc'
 import User from '../models/UserModel'
 
@@ -103,6 +104,9 @@ async function sidebarBlocInit() {
 	if (window.innerWidth <= 960) {
 		sidebarBloc.add(new SidebarClose())
 	}
+
+	// Set Items
+	sidebarBloc.add(new SidebarItemsSet(sidebarData))
 
 	Container.set(SidebarBloc, sidebarBloc)
 }

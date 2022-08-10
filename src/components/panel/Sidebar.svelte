@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte'
+	import { afterNavigate } from '$app/navigation'
+	import { page } from '$app/stores'
+	import { onDestroy, onMount } from 'svelte'
+	import { slide } from 'svelte/transition'
 	import Container from 'typedi'
-	import IconContact from '~icons/mdi/account-group-outline'
-	import IconBitcoin from '~icons/mdi/bitcoin'
-	import IconTask from '~icons/mdi/calendar-check-outline'
-	import IconCart from '~icons/mdi/cart-outline'
-	import IconChart from '~icons/mdi/chart-arc'
-	import IconChat from '~icons/mdi/chat-processing-outline'
-	import IconRight from '~icons/mdi/chevron-right'
-	import IconProduct from '~icons/mdi/clipboard-check-outline'
-	import IconCloud from '~icons/mdi/cloud-outline'
-	import IconEmail from '~icons/mdi/email-outline'
-	import IconFinance from '~icons/mdi/finance'
-	import IconAcademy from '~icons/mdi/school-outline'
+	import IconChevronRight from '~icons/heroicons-outline/chevron-right'
+	import IconChevronDown from '~icons/heroicons-outline/chevron-down'
+	import type { SidebarItem } from '../../assets/data/SidebarData'
 	import logo from '../../assets/img/logo-text.svg'
 	import male1 from '../../assets/img/male-1.jpeg'
-	import { SidebarBloc, SidebarClose } from '../../bloc/SidebarBloc'
+	import {
+		SidebarActivesToggle,
+		SidebarBloc,
+		SidebarCalculateActives,
+		SidebarClose
+	} from '../../bloc/SidebarBloc'
 	import SidebarItemDivider from './SidebarItemDivider.svelte'
 
 	const sidebarBloc = Container.get(SidebarBloc)
@@ -23,13 +22,25 @@
 	let state = sidebarBloc.state
 	let sidebarSub = sidebarBloc.listen((newState) => (state = newState))
 
-	onDestroy(() => {
-		sidebarSub.unsubscribe()
-	})
-
 	function onBackdropClick() {
 		sidebarBloc.add(new SidebarClose())
 	}
+
+	function onItemHasChildClick(item: SidebarItem) {
+		sidebarBloc.add(new SidebarActivesToggle(item))
+	}
+
+	afterNavigate(({ from, to }) => {
+		sidebarBloc.add(new SidebarCalculateActives($page.routeId!))
+	})
+
+	onMount(() => {
+		sidebarBloc.add(new SidebarCalculateActives($page.routeId!))
+	})
+
+	onDestroy(() => {
+		sidebarSub.unsubscribe()
+	})
 </script>
 
 {#if state.isOpen}
@@ -55,170 +66,64 @@
 	<!-- Content - Start -->
 	<div class="flex-auto text-white overflow-auto">
 		<ul>
-			<SidebarItemDivider />
+			{#each state.items as item, i (item)}
+				{#if !item.href && !item.childs}
+					<SidebarItemDivider />
 
-			<li class="py-3 px-4 text-xs mx-3">
-				<span class="font-bold text-[#818cf8]">DASHBOARDS</span>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm bg-white/10 rounded-lg"
-					href="/"
-				>
-					<IconProduct class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Project</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconChart class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Analytics</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconFinance class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Finance</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconBitcoin class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Crypto</span>
-				</a>
-			</li>
-
-			<SidebarItemDivider />
-
-			<li class="py-3 px-4 text-xs mx-3">
-				<span class="font-bold text-[#818cf8]">APPS</span>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconAcademy class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Academy</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconChat class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Chat</span>
-					<IconRight class="w-4 h-4 transform rtl:rotate-180" />
-				</a>
-			</li>
-
-			<ul class="py-1">
-				<li class="mb-1">
-					<a
-						class="flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-						href="/"
-					>
-						<span class="flex-auto">Home</span>
-					</a>
-				</li>
-				<li class="mb-1">
-					<a
-						class="flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-						href="/"
-					>
-						<span class="flex-auto">FAQ's</span>
-					</a>
-				</li>
-				<li class="mb-1">
-					<a
-						class="flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-						href="/"
-					>
-						<span class="flex-auto">Guides</span>
-					</a>
-				</li>
-				<li class="mb-1">
-					<a
-						class="flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-						href="/"
-					>
-						<span class="flex-auto">Support</span>
-					</a>
-				</li>
-			</ul>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconContact class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Contacts</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconCart class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Ecommerce</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconCloud class="h-6 w-6 mr-4" />
-					<span class="flex-auto">File Manager</span>
-				</a>
-			</li>
-
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconEmail class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Mailbox</span>
-					<div class="indicator mr-4">
-						<span
-							class="indicator-item indicator-middle indicator-end badge badge-secondary text-xs"
+					<li class="py-3 px-4 text-xs mx-3">
+						<span class="font-bold text-[#818cf8] uppercase">{item.text}</span>
+					</li>
+				{:else}
+					<li class="mb-1">
+						<a
+							class={`flex mx-3 items-center cursor-pointer justify-start py-2.5 px-4 text-sm hover:bg-white/10 rounded-lg select-none ${
+								state.actives.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
+							}`}
+							href={item.href}
+							rel={item.childs ? 'external' : null}
+							on:click={item.childs ? () => onItemHasChildClick(item) : null}
 						>
-							27
-						</span>
-					</div>
-				</a>
-			</li>
+							<svelte:component this={item.icon} class="h-6 w-6 mr-4" />
+							<span class="flex-auto">{item.text}</span>
 
-			<li class="mb-1">
-				<a
-					class="flex mx-3 items-center justify-start py-2.5 px-4 text-sm rounded-lg opacity-75 hover:opacity-100 hover:bg-white/10"
-					href="/"
-				>
-					<IconTask class="h-6 w-6 mr-4" />
-					<span class="flex-auto">Tasks</span>
-				</a>
-			</li>
+							{#if item.childs}
+								{#if state.actives.includes(item)}
+									<IconChevronDown class="w-4 h-4" />
+								{:else}
+									<IconChevronRight class="w-4 h-4 transform rtl:rotate-180 rtl:rotate-z-[90deg]" />
+								{/if}
+							{/if}
+
+							{#if item.label}
+								<div class="indicator mr-4">
+									<span
+										class="indicator-item indicator-middle indicator-end badge badge-secondary text-xs"
+									>
+										{item.label}
+									</span>
+								</div>
+							{/if}
+						</a>
+					</li>
+
+					{#if item.childs && state.actives.includes(item)}
+						<ul class="py-1" transition:slide|local>
+							{#each item.childs as child}
+								<li class="mb-1">
+									<a
+										class={`flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg hover:bg-white/10 ${
+											state.actives.includes(child) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
+										}`}
+										href={child.href}
+									>
+										<span class="flex-auto">{child.text}</span>
+									</a>
+								</li>
+							{/each}
+						</ul>
+					{/if}
+				{/if}
+			{/each}
 
 			<SidebarItemDivider />
 		</ul>
