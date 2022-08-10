@@ -40,7 +40,7 @@
 {/if}
 
 <div
-	class="sidebar fixed top-0 bottom-0 w-72 bg-[#3830a3] flex flex-col z-50"
+	class="sidebar fixed top-0 bottom-0 w-72 bg-[#3830a3] dark:bg-[#131d35] flex flex-col z-50"
 	class:ltr:-left-full={!state.isOpen}
 	class:rtl:-right-full={!state.isOpen}
 	class:ltr:left-0={state.isOpen}
