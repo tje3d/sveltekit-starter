@@ -30,6 +30,7 @@ pnpm run build
 
 You can preview the production build with `pnpm run preview`.
 
+![Dashboard](https://user-images.githubusercontent.com/5238989/183947001-81f0b3bf-7507-4ebd-8748-839e4caf1067.png)
 ![Signin](https://user-images.githubusercontent.com/5238989/182401589-a927fd30-11a1-4933-9d32-2bcd3f857a7b.png)
 ![Signup](https://user-images.githubusercontent.com/5238989/182401554-1e1b1736-f052-4010-b8a8-912e1b65ffc0.png)
 ![Signout](https://user-images.githubusercontent.com/5238989/182401615-7a683ba1-48c8-47b9-9f62-1a3f346624bc.png)
