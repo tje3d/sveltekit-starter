@@ -37,7 +37,7 @@
 </script>
 
 <div
-	class="navbar bg-white px-4 shadow-sm dark:bg-[#0f172a] dark:border-b border-b-white/10 dark:text-[#94a2b8]"
+	class="navbar bg-white px-4 shadow-sm dark:bg-[#0f172a] dark:border-b border-b-white/10 dark:text-[#94a2b8] relative z-20"
 >
 	<div class="navbar-start">
 		<button tabindex="0" class="btn btn-ghost btn-circle" on:click={sidebarToggle}>
