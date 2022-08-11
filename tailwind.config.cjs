@@ -24,7 +24,8 @@ const config = {
 	plugins: [require('daisyui'), require('tailwindcss-flip'), require('tailwindcss-dir')()],
 
 	daisyui: {
-		rtl: false
+		rtl: false,
+		themes: false
 	}
 }
 
