@@ -46,6 +46,7 @@
 		"apexcharts": "^3.35.4",
 		"dayjs": "^1.11.4",
 		"lodash": "^4.17.21",
+		"svelte-paginate": "^0.0.1",
 		"yup": "^0.32.11"
 	}
 }
