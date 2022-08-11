@@ -85,7 +85,7 @@ function getActiveItems(actives: SidebarItem[], items: SidebarItem[], routeId: s
 		}
 
 		if (item.href && !activated) {
-			if (item.href.match(routeId)) {
+			if (item.href === '/' + routeId) {
 				actives.push(item)
 				activated = true
 			}
