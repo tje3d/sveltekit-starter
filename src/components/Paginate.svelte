@@ -26,9 +26,11 @@
 	on:setPage={onSetPage}
 >
 	<div slot="next">
-		<IconRight class="w-4 h-4" />
+		<IconRight class="w-4 h-4 rtl:hidden" />
+		<IconLeft class="w-4 h-4 ltr:hidden" />
 	</div>
 	<div slot="prev">
-		<IconLeft class="w-4 h-4" />
+		<IconLeft class="w-4 h-4 rtl:hidden" />
+		<IconRight class="w-4 h-4 ltr:hidden" />
 	</div>
 </PaginationNav>
