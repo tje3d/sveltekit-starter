@@ -23,3 +23,12 @@ body[dir='rtl'] .checkbox-primary {
 	--chkbg: var(--p) !important;
 	--chkfg: var(--pc) !important;
 }
+
+body[dir='rtl'] .steps .step:before {
+	margin-left: 0;
+	margin-right: -100%;
+}
+
+html.dark .label-text {
+	color: #ececec;
+}

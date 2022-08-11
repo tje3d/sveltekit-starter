@@ -1,5 +1,7 @@
 export default function focus(node: HTMLElement) {
-	node.focus()
+	setTimeout(() => {
+		node.focus()
+	})
 
 	return {
 		destroy() {

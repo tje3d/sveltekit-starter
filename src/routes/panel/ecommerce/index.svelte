@@ -161,10 +161,10 @@
 					/>
 				</div>
 			</span>
-			<button class="btn btn-primary rounded-3xl">
+			<a href="/panel/ecommerce/add" class="btn btn-primary rounded-3xl">
 				<IconPlus class="w-5 h-5 mr-2" />
 				Add Product
-			</button>
+			</a>
 		</div>
 	</div>
 
@@ -256,7 +256,7 @@
 
 	<div class="grid grid-cols-3 items-center justify-between">
 		<div class="text-start">
-			{#await import('../../components/Paginate.svelte') then c}
+			{#await import('../../../components/Paginate.svelte') then c}
 				<svelte:component
 					this={c.default}
 					{currentPage}

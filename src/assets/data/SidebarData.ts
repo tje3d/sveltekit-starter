@@ -73,7 +73,17 @@ export const sidebarData: SidebarItem[] = [
 	{
 		text: 'Ecommerce',
 		icon: IconShopping,
-		href: '/panel/ecommerce'
+		matchPattern: 'panel/ecommerce.*',
+		childs: [
+			{
+				text: 'Manage',
+				href: '/panel/ecommerce'
+			},
+			{
+				text: 'Add Product',
+				href: '/panel/ecommerce/add'
+			}
+		]
 	},
 	{
 		text: 'File Manager',
