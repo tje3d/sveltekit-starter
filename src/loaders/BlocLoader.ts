@@ -1,5 +1,6 @@
 import { browser, dev } from '$app/environment'
 import { filter, Observable, tap } from 'rxjs'
+import type { Unsubscriber } from 'svelte/store'
 import {
 	AuthBloc,
 	AuthState,
@@ -16,7 +17,10 @@ import {
 	ThemeState
 } from '/src/bloc/ThemeBloc'
 import Container from '/src/di/Di'
+import { toUnsubscriber } from '/src/helpers/utils'
 import User from '/src/models/UserModel'
+
+let subs: Unsubscriber[] = []
 
 export default new Observable((observer) => {
 	dev && console.log('Loading Bloc')
@@ -28,16 +32,20 @@ export default new Observable((observer) => {
 	observer.next()
 
 	return () => {
-		// unsub...
+		for (const key in subs) {
+			subs[key]()
+		}
+
+		subs = []
 	}
 })
 
 function authBlocInit() {
 	dev && console.log('Loading AuthBloc')
 
-	const authBloc = new AuthBloc(AuthState.new())
-
-	Container.set(AuthBloc, authBloc)
+	if (!Container.has(AuthBloc)) {
+		Container.set(AuthBloc, new AuthBloc(AuthState.new()))
+	}
 
 	if (!browser) {
 		return
@@ -49,30 +57,37 @@ function authBlocInit() {
 	if (currentUser) {
 		try {
 			const user = User.fromJson(JSON.parse(currentUser))
-			authBloc.add(new AuthUserFromStorage(user))
+			Container.get(AuthBloc).add(new AuthUserFromStorage(user))
 		} catch (error) {
 			console.error(error)
-			authBloc.add(new AuthUserStorageCorrupted())
+			Container.get(AuthBloc).add(new AuthUserStorageCorrupted())
 		}
 	}
 
 	// Save AuthBloc
-	authBloc.state$
-		.pipe(filter((state) => !!state.eventName && state.eventName !== AuthUserFromStorage.name))
-		.subscribe((state) => {
-			if (state.user) {
-				localStorage.setItem('user', JSON.stringify(state.user))
-			} else {
-				localStorage.removeItem('user')
-			}
-		})
+	subs.push(
+		toUnsubscriber(
+			Container.get(AuthBloc)
+				.state$.pipe(
+					filter((state) => !!state.eventName && state.eventName !== AuthUserFromStorage.name)
+				)
+				.subscribe((state) => {
+					if (state.user) {
+						localStorage.setItem('user', JSON.stringify(state.user))
+					} else {
+						localStorage.removeItem('user')
+					}
+				})
+		)
+	)
 }
 
 function themeBlocInit() {
 	dev && console.log('Loading ThemeBloc')
-	const themeBloc = new ThemeBloc(ThemeState.new())
 
-	Container.set(ThemeBloc, themeBloc)
+	if (!Container.has(ThemeBloc)) {
+		Container.set(ThemeBloc, new ThemeBloc(ThemeState.new()))
+	}
 
 	if (!browser) {
 		return
@@ -93,22 +108,22 @@ function themeBlocInit() {
 
 	switch (currentTheme) {
 		case 'dark':
-			themeBloc.add(new ThemeDark())
+			Container.get(ThemeBloc).add(new ThemeDark())
 			break
 		case 'light':
 		default:
-			themeBloc.add(new ThemeLight())
+			Container.get(ThemeBloc).add(new ThemeLight())
 			break
 	}
 
 	// Detect ColorScheme
 	if (window.matchMedia) {
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-			if (event.matches) {
-				themeBloc.add(new ThemeDark())
-			} else {
-				themeBloc.add(new ThemeLight())
-			}
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', onMediaChanges)
+
+		subs.push(() => {
+			window
+				.matchMedia('(prefers-color-scheme: dark)')
+				.removeEventListener('change', onMediaChanges)
 		})
 	}
 
@@ -117,34 +132,38 @@ function themeBlocInit() {
 
 	switch (currentDir) {
 		case 'rtl':
-			themeBloc.add(new ThemeRTL())
+			Container.get(ThemeBloc).add(new ThemeRTL())
 			break
 		case 'ltr':
 		default:
-			themeBloc.add(new ThemeLTR())
+			Container.get(ThemeBloc).add(new ThemeLTR())
 			break
 	}
 
 	// Save ThemeBloc
-	themeBloc.state$
-		.pipe(
-			tap((state) => {
-				// Color
-				if (state.theme) {
-					localStorage.setItem('theme', state.theme)
-				} else {
-					localStorage.removeItem('theme')
-				}
+	subs.push(
+		toUnsubscriber(
+			Container.get(ThemeBloc)
+				.state$.pipe(
+					tap((state) => {
+						// Color
+						if (state.theme) {
+							localStorage.setItem('theme', state.theme)
+						} else {
+							localStorage.removeItem('theme')
+						}
 
-				// Dir
-				if (state.dir) {
-					localStorage.setItem('dir', state.dir)
-				} else {
-					localStorage.removeItem('dir')
-				}
-			})
+						// Dir
+						if (state.dir) {
+							localStorage.setItem('dir', state.dir)
+						} else {
+							localStorage.removeItem('dir')
+						}
+					})
+				)
+				.subscribe()
 		)
-		.subscribe()
+	)
 }
 
 function sidebarBlocInit() {
@@ -156,5 +175,13 @@ function sidebarBlocInit() {
 	// Set Default State
 	if (browser && window.innerWidth <= 960) {
 		sidebarBloc.add(new SidebarClose())
+	}
+}
+
+function onMediaChanges(event: MediaQueryListEvent) {
+	if (event.matches) {
+		Container.get(ThemeBloc).add(new ThemeDark())
+	} else {
+		Container.get(ThemeBloc).add(new ThemeLight())
 	}
 }

@@ -76,6 +76,7 @@
 								$state.actives.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
 							}`}
 							href={item.href}
+							data-sveltekit-prefetch
 							rel={item.childs ? 'external' : null}
 							on:click={item.childs ? () => onItemHasChildClick(item) : null}
 						>
@@ -113,6 +114,7 @@
 												: 'opacity-75 hover:opacity-100'
 										}`}
 										href={child.href}
+										data-sveltekit-prefetch
 									>
 										<span class="flex-auto">{child.text}</span>
 									</a>

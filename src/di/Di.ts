@@ -16,6 +16,10 @@ class Di {
 	set<K>(k: Constructable<K>, v: any) {
 		this.containerMap.set(k, v)
 	}
+
+	has<T = unknown>(input: Constructable<T>): boolean {
+		return this.containerMap.has(input)
+	}
 }
 
 const Container = new Di()

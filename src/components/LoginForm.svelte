@@ -47,7 +47,7 @@
 
 <div class="flex items-baseline mt-0.5 font-medium ">
 	<div>Don't have an account?</div>
-	<a class="ml-1 text-blue-500 hover:underline font-bold" sveltekit:prefetch href="/signup">
+	<a class="ml-1 text-blue-500 hover:underline font-bold" data-sveltekit-prefetch href="/signup">
 		Sign up
 	</a>
 </div>
