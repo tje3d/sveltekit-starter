@@ -13,6 +13,10 @@ const config = {
 	preview: {
 		port: 80,
 		host: '0.0.0.0'
+	},
+
+	alias: {
+		'/src/': path.resolve(__dirname, 'src')
 	}
 }
 
