@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition'
 	import * as yup from 'yup'
-	import logo from '../assets/img/logo.svg'
-	import focus from '../directives/Focus'
+	import logo from '/src/assets/img/logo.svg'
+	import focus from '/src/directives/Focus'
 
 	let signupSchema = yup.object({
 		fullname: yup.string().required(),

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment'
 	import IconExport from '~icons/heroicons-outline/cloud-download'
 	import IconSettings from '~icons/heroicons-outline/cog'
 	import IconTrendDown from '~icons/heroicons-outline/trending-down'
@@ -40,17 +41,21 @@
 					<div class="font-medium text-gray-500">Number of unique visitors</div>
 				</div>
 			</div>
-			{#await import('../../components/panel/charts/VisitorsChart.svelte') then c}
-				<svelte:component this={c.default} />
-			{/await}
+			{#if browser}
+				{#await import('/src/components/panel/charts/VisitorsChart.svelte') then c}
+					<svelte:component this={c.default} />
+				{/await}
+			{/if}
 		</div>
 
 		<div
 			class="sm:col-span-3 lg:col-span-4 flex flex-col flex-auto p-6 bg-white dark:bg-[#1e293b] shadow rounded-2xl overflow-hidden"
 		>
-			{#await import('../../components/panel/charts/PreciousRadarChart.svelte') then c}
-				<svelte:component this={c.default} />
-			{/await}
+			{#if browser}
+				{#await import('/src/components/panel/charts/PreciousRadarChart.svelte') then c}
+					<svelte:component this={c.default} />
+				{/await}
+			{/if}
 		</div>
 		<div class="sm:col-span-3 lg:col-span-2 grid grid-cols-1 gap-y-6">
 			<div
@@ -69,9 +74,11 @@
 						</div>
 					</div>
 
-					{#await import('../../components/panel/charts/PreciousLineChart.svelte') then c}
-						<svelte:component this={c.default} />
-					{/await}
+					{#if browser}
+						{#await import('/src/components/panel/charts/PreciousLineChart.svelte') then c}
+							<svelte:component this={c.default} />
+						{/await}
+					{/if}
 				</div>
 			</div>
 			<div
@@ -90,9 +97,11 @@
 						</div>
 					</div>
 
-					{#await import('../../components/panel/charts/PreciousLineChart.svelte') then c}
-						<svelte:component this={c.default} />
-					{/await}
+					{#if browser}
+						{#await import('/src/components/panel/charts/PreciousLineChart.svelte') then c}
+							<svelte:component this={c.default} />
+						{/await}
+					{/if}
 				</div>
 			</div>
 			<div
@@ -111,9 +120,11 @@
 						</div>
 					</div>
 
-					{#await import('../../components/panel/charts/PreciousLineChart.svelte') then c}
-						<svelte:component this={c.default} />
-					{/await}
+					{#if browser}
+						{#await import('/src/components/panel/charts/PreciousLineChart.svelte') then c}
+							<svelte:component this={c.default} />
+						{/await}
+					{/if}
 				</div>
 			</div>
 		</div>

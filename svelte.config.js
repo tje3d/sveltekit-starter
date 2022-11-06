@@ -1,4 +1,5 @@
-import adapter from '@sveltejs/adapter-node'
+// import adapter from '@sveltejs/adapter-node'
+import adapterStatic from '@sveltejs/adapter-static'
 import preprocess from 'svelte-preprocess'
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -12,7 +13,13 @@ const config = {
 	],
 
 	kit: {
-		adapter: adapter()
+		adapter: adapterStatic({
+			precompress: true,
+			fallback: 'index.html'
+		}),
+		version: {
+			pollInterval: 60 * 1000
+		}
 	}
 }
 

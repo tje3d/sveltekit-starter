@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Err from '../../components/errors/404.svelte'
+	import Err from '/src/components/errors/404.svelte'
 </script>
 
 <Err>

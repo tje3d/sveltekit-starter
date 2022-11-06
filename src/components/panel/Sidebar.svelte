@@ -1,26 +1,26 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
 	import { page } from '$app/stores'
-	import { onDestroy, onMount } from 'svelte'
+	import { map } from 'rxjs'
+	import { onMount } from 'svelte'
 	import { slide } from 'svelte/transition'
-	import Container from 'typedi'
-	import IconChevronRight from '~icons/heroicons-outline/chevron-right'
 	import IconChevronDown from '~icons/heroicons-outline/chevron-down'
-	import type { SidebarItem } from '../../assets/data/SidebarData'
-	import logo from '../../assets/img/logo-text.svg'
-	import male1 from '../../assets/img/male-1.jpeg'
+	import IconChevronRight from '~icons/heroicons-outline/chevron-right'
+	import SidebarItemDivider from './SidebarItemDivider.svelte'
+	import type { SidebarItem } from '/src/assets/data/SidebarData'
+	import logo from '/src/assets/img/logo-text.svg'
+	import male1 from '/src/assets/img/male-1.jpeg'
 	import {
 		SidebarActivesToggle,
 		SidebarBloc,
 		SidebarCalculateActives,
 		SidebarClose
-	} from '../../bloc/SidebarBloc'
-	import SidebarItemDivider from './SidebarItemDivider.svelte'
+	} from '/src/bloc/SidebarBloc'
+	import Container from '/src/di/Di'
 
 	const sidebarBloc = Container.get(SidebarBloc)
-
-	let state = sidebarBloc.state
-	let sidebarSub = sidebarBloc.listen((newState) => (state = newState))
+	const state = sidebarBloc.state$
+	const isOpen = state.pipe(map((state) => state.isOpen))
 
 	function onBackdropClick() {
 		sidebarBloc.add(new SidebarClose())
@@ -31,19 +31,15 @@
 	}
 
 	afterNavigate(({ from, to }) => {
-		sidebarBloc.add(new SidebarCalculateActives($page.routeId!))
+		sidebarBloc.add(new SidebarCalculateActives($page.route.id!))
 	})
 
 	onMount(() => {
-		sidebarBloc.add(new SidebarCalculateActives($page.routeId!))
-	})
-
-	onDestroy(() => {
-		sidebarSub.unsubscribe()
+		sidebarBloc.add(new SidebarCalculateActives($page.route.id!))
 	})
 </script>
 
-{#if state.isOpen}
+{#if $isOpen}
 	<div
 		class="bg-black bg-opacity-50 fixed top-0 right-0 bottom-0 left-0 z-40 md:hidden"
 		on:click={onBackdropClick}
@@ -52,10 +48,10 @@
 
 <div
 	class="sidebar fixed top-0 bottom-0 w-72 bg-[#3830a3] dark:bg-[#131d35] flex flex-col z-50"
-	class:ltr:-left-full={!state.isOpen}
-	class:rtl:-right-full={!state.isOpen}
-	class:ltr:left-0={state.isOpen}
-	class:rtl:right-0={state.isOpen}
+	class:ltr:-left-full={!$isOpen}
+	class:rtl:-right-full={!$isOpen}
+	class:ltr:left-0={$isOpen}
+	class:rtl:right-0={$isOpen}
 >
 	<!-- Header - Start -->
 	<div class="flex items-center h-20 p-6 pb-0">
@@ -66,7 +62,7 @@
 	<!-- Content - Start -->
 	<div class="flex-auto text-white overflow-auto">
 		<ul>
-			{#each state.items as item, i (item)}
+			{#each $state.items as item, i (item)}
 				{#if !item.href && !item.childs}
 					<SidebarItemDivider />
 
@@ -77,7 +73,7 @@
 					<li class="mb-1">
 						<a
 							class={`flex mx-3 items-center cursor-pointer justify-start py-2.5 px-4 text-sm hover:bg-white/10 rounded-lg select-none ${
-								state.actives.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
+								$state.actives.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
 							}`}
 							href={item.href}
 							rel={item.childs ? 'external' : null}
@@ -87,7 +83,7 @@
 							<span class="flex-auto">{item.text}</span>
 
 							{#if item.childs}
-								{#if state.actives.includes(item)}
+								{#if $state.actives.includes(item)}
 									<IconChevronDown class="w-4 h-4" />
 								{:else}
 									<IconChevronRight class="w-4 h-4 transform rtl:rotate-180 rtl:rotate-z-[90deg]" />
@@ -106,13 +102,15 @@
 						</a>
 					</li>
 
-					{#if item.childs && state.actives.includes(item)}
+					{#if item.childs && $state.actives.includes(item)}
 						<ul class="py-1" transition:slide|local>
 							{#each item.childs as child}
 								<li class="mb-1">
 									<a
 										class={`flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg hover:bg-white/10 ${
-											state.actives.includes(child) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
+											$state.actives.includes(child)
+												? 'bg-white/10'
+												: 'opacity-75 hover:opacity-100'
 										}`}
 										href={child.href}
 									>

@@ -1,9 +1,5 @@
-<script context="module">
-	export const prerender = true
-</script>
-
 <script lang="ts">
-	import logo from '../assets/img/logo.svg'
+	import logo from '/src/assets/img/logo.svg'
 </script>
 
 <svelte:head>

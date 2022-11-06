@@ -1,58 +1,95 @@
-import { browser } from '$app/env'
-import Container from 'typedi'
-import { sidebarData } from '../assets/data/SidebarData'
-import { AuthBloc, AuthState, AuthUserUpdate } from '../bloc/AuthBloc'
-import { SidebarBloc, SidebarClose, SidebarItemsSet, SidebarState } from '../bloc/SidebarBloc'
-import { ThemeBloc, ThemeDark, ThemeLight, ThemeLTR, ThemeRTL, ThemeState } from '../bloc/ThemeBloc'
-import User from '../models/UserModel'
+import { browser, dev } from '$app/environment'
+import { filter, Observable, tap } from 'rxjs'
+import {
+	AuthBloc,
+	AuthState,
+	AuthUserFromStorage,
+	AuthUserStorageCorrupted
+} from '/src/bloc/AuthBloc'
+import { SidebarBloc, SidebarClose, SidebarState } from '/src/bloc/SidebarBloc'
+import {
+	ThemeBloc,
+	ThemeDark,
+	ThemeLight,
+	ThemeLTR,
+	ThemeRTL,
+	ThemeState
+} from '/src/bloc/ThemeBloc'
+import Container from '/src/di/Di'
+import User from '/src/models/UserModel'
 
-export default async function () {
-	if (!browser) {
-		return
+export default new Observable((observer) => {
+	dev && console.log('Loading Bloc')
+
+	authBlocInit()
+	themeBlocInit()
+	sidebarBlocInit()
+
+	observer.next()
+
+	return () => {
+		// unsub...
 	}
+})
 
-	await authBlocInit()
-	await themeBlocInit()
-	await sidebarBlocInit()
-}
-
-async function authBlocInit() {
-	console.log('Loading AuthBloc')
+function authBlocInit() {
+	dev && console.log('Loading AuthBloc')
 
 	const authBloc = new AuthBloc(AuthState.new())
 
 	Container.set(AuthBloc, authBloc)
+
+	if (!browser) {
+		return
+	}
 
 	// Load AuthBLOC
 	const currentUser = localStorage.getItem('user')
 
 	if (currentUser) {
 		try {
-			const user = await User.fromJson(JSON.parse(currentUser))
-			authBloc.add(new AuthUserUpdate(user))
+			const user = User.fromJson(JSON.parse(currentUser))
+			authBloc.add(new AuthUserFromStorage(user))
 		} catch (error) {
 			console.error(error)
+			authBloc.add(new AuthUserStorageCorrupted())
 		}
 	}
 
 	// Save AuthBloc
-	authBloc.listen((state) => {
-		if (state.user) {
-			localStorage.setItem('user', JSON.stringify(state.user))
-		} else {
-			localStorage.removeItem('user')
-		}
-	})
+	authBloc.state$
+		.pipe(filter((state) => !!state.eventName && state.eventName !== AuthUserFromStorage.name))
+		.subscribe((state) => {
+			if (state.user) {
+				localStorage.setItem('user', JSON.stringify(state.user))
+			} else {
+				localStorage.removeItem('user')
+			}
+		})
 }
 
-async function themeBlocInit() {
-	console.log('Loading ThemeBloc')
+function themeBlocInit() {
+	dev && console.log('Loading ThemeBloc')
 	const themeBloc = new ThemeBloc(ThemeState.new())
 
 	Container.set(ThemeBloc, themeBloc)
 
+	if (!browser) {
+		return
+	}
+
+	let preferColor: string | undefined
+
+	if (window.matchMedia) {
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			preferColor = 'dark'
+		} else {
+			preferColor = 'light'
+		}
+	}
+
 	// Color
-	const currentTheme = localStorage.getItem('theme')
+	const currentTheme = localStorage.getItem('theme') || preferColor
 
 	switch (currentTheme) {
 		case 'dark':
@@ -62,6 +99,17 @@ async function themeBlocInit() {
 		default:
 			themeBloc.add(new ThemeLight())
 			break
+	}
+
+	// Detect ColorScheme
+	if (window.matchMedia) {
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+			if (event.matches) {
+				themeBloc.add(new ThemeDark())
+			} else {
+				themeBloc.add(new ThemeLight())
+			}
+		})
 	}
 
 	// Dir
@@ -78,35 +126,35 @@ async function themeBlocInit() {
 	}
 
 	// Save ThemeBloc
-	themeBloc.listen((state) => {
-		// Color
-		if (state.theme) {
-			localStorage.setItem('theme', state.theme)
-		} else {
-			localStorage.removeItem('theme')
-		}
+	themeBloc.state$
+		.pipe(
+			tap((state) => {
+				// Color
+				if (state.theme) {
+					localStorage.setItem('theme', state.theme)
+				} else {
+					localStorage.removeItem('theme')
+				}
 
-		// Dir
-		if (state.dir) {
-			localStorage.setItem('dir', state.dir)
-		} else {
-			localStorage.removeItem('dir')
-		}
-	})
+				// Dir
+				if (state.dir) {
+					localStorage.setItem('dir', state.dir)
+				} else {
+					localStorage.removeItem('dir')
+				}
+			})
+		)
+		.subscribe()
 }
 
-async function sidebarBlocInit() {
-	console.log('Loading SidebarBloc')
+function sidebarBlocInit() {
+	dev && console.log('Loading SidebarBloc')
 
 	const sidebarBloc = new SidebarBloc(SidebarState.new())
+	Container.set(SidebarBloc, sidebarBloc)
 
 	// Set Default State
-	if (window.innerWidth <= 960) {
+	if (browser && window.innerWidth <= 960) {
 		sidebarBloc.add(new SidebarClose())
 	}
-
-	// Set Items
-	sidebarBloc.add(new SidebarItemsSet(sidebarData))
-
-	Container.set(SidebarBloc, sidebarBloc)
 }

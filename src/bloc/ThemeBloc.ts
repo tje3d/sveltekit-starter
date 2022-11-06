@@ -1,5 +1,5 @@
-import { Bloc } from '@felangel/bloc'
-import { getValIfDefined as v } from '../helpers/utils'
+import { Bloc, BlocState } from '/src/bloc/Bloc'
+import { getValIfDefined as v } from '/src/helpers/utils'
 
 export class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 	async *mapEventToState(event: ThemeEvent): AsyncIterableIterator<ThemeState> {
@@ -86,13 +86,16 @@ export interface ThemeStateProperties {
 	dir: 'ltr' | 'rtl'
 }
 
-export class ThemeState implements ThemeStateProperties {
-	theme!: Themes
-	dir!: 'ltr' | 'rtl'
+export class ThemeState extends BlocState implements ThemeStateProperties {
+	theme: Themes = 'light'
+	dir: 'ltr' | 'rtl' = 'ltr'
 
 	constructor(input: Partial<ThemeStateProperties>) {
-		for (let i in input) {
-			;(this as any)[i] = (input as any)[i]
+		super()
+
+		for (let key in input) {
+			// @ts-ignore
+			this[key] = input[key]
 		}
 	}
 

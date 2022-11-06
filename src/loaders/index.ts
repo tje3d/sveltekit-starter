@@ -1,14 +1,10 @@
-import BlocLoader from './BlocLoader'
-import DayjsLoader from './DayjsLoader'
-import ServiceLoader from './ServiceLoader'
+import { map, shareReplay, zip } from 'rxjs'
+import BlocLoader from '/src/loaders/BlocLoader'
+import DayjsLoader from '/src/loaders/DayjsLoader'
 
-export default async () => {
-	console.log('Loader', 'Loading Services')
-	await ServiceLoader()
-
-	console.log('Loader', 'Loading Dayjs')
-	await DayjsLoader()
-
-	console.log('Loader', 'Loading BloC')
-	await BlocLoader()
-}
+export default zip([DayjsLoader, BlocLoader]).pipe(
+	map(() => true),
+	shareReplay({
+		refCount: true
+	})
+)

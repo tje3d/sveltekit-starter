@@ -17,7 +17,7 @@ export default class User implements UserProperties {
 	// ─── FACTORY ────────────────────────────────────────────────────────────────────
 	//
 
-	static async fromJson(input: UserProperties) {
+	static fromJson(input: UserProperties) {
 		const instance = new User()
 
 		for (const key in input) {
@@ -27,7 +27,7 @@ export default class User implements UserProperties {
 		return instance
 	}
 
-	async toJson() {
+	toJson() {
 		return {
 			id: this.id,
 			access_token: this.access_token,

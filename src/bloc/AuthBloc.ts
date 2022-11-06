@@ -1,14 +1,16 @@
-import { Bloc } from '@felangel/bloc'
-import { Service } from 'typedi'
-import { getValIfDefined as v } from '../helpers/utils'
-import type User from '../models/UserModel'
+import { Bloc, BlocState } from '/src/bloc/Bloc'
+import { getValIfDefined as v } from '/src/helpers/utils'
+import type User from '/src/models/UserModel'
 
-@Service()
 export class AuthBloc extends Bloc<AuthEvent, AuthState> {
 	async *mapEventToState(event: AuthEvent): AsyncIterableIterator<AuthState> {
 		// ─────────────────────────────────────────────────────────────────
 
-		if (event instanceof AuthLogin || event instanceof AuthUserUpdate) {
+		if (
+			event instanceof AuthLogin ||
+			event instanceof AuthUserUpdate ||
+			event instanceof AuthUserFromStorage
+		) {
 			yield this.state.copyWith({
 				user: event.user
 			})
@@ -17,7 +19,7 @@ export class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
 		// ─────────────────────────────────────────────────────────────────
 
-		if (event instanceof AuthLogout) {
+		if (event instanceof AuthLogout || event instanceof AuthUserStorageCorrupted) {
 			yield this.state.copyWith({
 				user: null
 			})
@@ -52,6 +54,14 @@ export class AuthLogout extends AuthEvent {
 	}
 }
 
+export class AuthUserFromStorage extends AuthEvent {
+	constructor(public user: User) {
+		super()
+	}
+}
+
+export class AuthUserStorageCorrupted extends AuthEvent {}
+
 //
 // ─── STATE ──────────────────────────────────────────────────────────────────────
 //
@@ -60,12 +70,15 @@ export interface AuthStateProperties {
 	user?: User | null
 }
 
-export class AuthState implements AuthStateProperties {
+export class AuthState extends BlocState implements AuthStateProperties {
 	user?: User | null
 
 	constructor(input: Partial<AuthStateProperties>) {
-		for (let i in input) {
-			;(this as any)[i] = (input as any)[i]
+		super()
+
+		for (let key in input) {
+			// @ts-ignore
+			this[key] = input[key]
 		}
 	}
 

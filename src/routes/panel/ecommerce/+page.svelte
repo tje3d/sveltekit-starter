@@ -256,7 +256,7 @@
 
 	<div class="grid grid-cols-3 items-center justify-between">
 		<div class="text-start">
-			{#await import('../../../components/Paginate.svelte') then c}
+			{#await import('/src/components/Paginate.svelte') then c}
 				<svelte:component
 					this={c.default}
 					{currentPage}

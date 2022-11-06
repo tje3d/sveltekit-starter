@@ -1,17 +1,13 @@
-<script context="module">
-	export const prerender = true
-</script>
-
 <script lang="ts">
-	import female1 from '../assets/img/female-1.jpeg'
-	import female2 from '../assets/img/female-2.jpeg'
-	import male1 from '../assets/img/male-1.jpeg'
-	import male2 from '../assets/img/male-2.jpeg'
-	import LoginForm from '../components/LoginForm.svelte'
+	import female1 from '/src/assets/img/female-1.jpeg'
+	import female2 from '/src/assets/img/female-2.jpeg'
+	import male1 from '/src/assets/img/male-1.jpeg'
+	import male2 from '/src/assets/img/male-2.jpeg'
+	import SignupForm from '/src/components/SignupForm.svelte'
 </script>
 
 <svelte:head>
-	<title>Login</title>
+	<title>Signup</title>
 </svelte:head>
 
 <div class="flex flex-col flex-auto h-full">
@@ -99,7 +95,7 @@
 			<!-- Form Section -->
 			<div class="w-full sm:w-auto py-8 px-4 sm:p-12 md:p-16">
 				<div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
-					<LoginForm />
+					<SignupForm />
 				</div>
 			</div>
 		</div>

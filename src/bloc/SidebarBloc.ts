@@ -1,9 +1,7 @@
-import { Bloc } from '@felangel/bloc'
-import { Service } from 'typedi'
-import type { SidebarItem } from '../assets/data/SidebarData'
-import { getValIfDefined as v } from '../helpers/utils'
+import { sidebarData, type SidebarItem } from '/src/assets/data/SidebarData'
+import { Bloc, BlocState } from '/src/bloc/Bloc'
+import { getValIfDefined as v } from '/src/helpers/utils'
 
-@Service()
 export class SidebarBloc extends Bloc<SidebarEvent, SidebarState> {
 	async *mapEventToState(event: SidebarEvent): AsyncIterableIterator<SidebarState> {
 		// ─────────────────────────────────────────────────────────────────
@@ -21,15 +19,6 @@ export class SidebarBloc extends Bloc<SidebarEvent, SidebarState> {
 					: !this.state.isOpen
 
 			yield this.state.copyWith({ isOpen })
-			return
-		}
-
-		// ─────────────────────────────────────────────────────────────────
-
-		if (event instanceof SidebarItemsSet) {
-			yield this.state.copyWith({
-				items: event.items
-			})
 			return
 		}
 
@@ -109,12 +98,6 @@ export class SidebarClose extends SidebarEvent {}
 
 export class SidebarToggle extends SidebarEvent {}
 
-export class SidebarItemsSet extends SidebarEvent {
-	constructor(public items: SidebarItem[]) {
-		super()
-	}
-}
-
 export class SidebarActivesToggle extends SidebarEvent {
 	constructor(public item: SidebarItem) {
 		super()
@@ -137,14 +120,17 @@ export interface SidebarStateProperties {
 	actives: SidebarItem[]
 }
 
-export class SidebarState implements SidebarStateProperties {
+export class SidebarState extends BlocState implements SidebarStateProperties {
 	isOpen: boolean = true
-	items: SidebarItem[] = []
+	items: SidebarItem[] = sidebarData
 	actives: SidebarItem[] = []
 
 	constructor(input: Partial<SidebarStateProperties>) {
-		for (let i in input) {
-			;(this as any)[i] = (input as any)[i]
+		super()
+
+		for (let key in input) {
+			// @ts-ignore
+			this[key] = input[key]
 		}
 	}
 

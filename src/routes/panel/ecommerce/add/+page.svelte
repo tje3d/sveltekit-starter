@@ -1,6 +1,6 @@
 <script lang="ts">
 	import IconLeft from '~icons/heroicons-outline/chevron-left'
-	import focus from '../../../directives/Focus'
+	import focus from '/src/directives/Focus'
 </script>
 
 <div class="w-full max-w-screen-xl mx-auto px-6 xl:px-0 pb-8">

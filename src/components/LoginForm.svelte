@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-
 	import { fly } from 'svelte/transition'
 	import * as yup from 'yup'
-	import logo from '../assets/img/logo.svg'
-	import focus from '../directives/Focus'
+	import logo from '/src/assets/img/logo.svg'
+	import focus from '/src/directives/Focus'
 
 	let loginSchema = yup.object({
 		email: yup.string().required().email(),

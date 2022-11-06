@@ -1,25 +1,18 @@
 <script lang="ts">
-	import { onDestroy } from 'svelte'
-	import Container from 'typedi'
 	import IconBell from '~icons/heroicons-outline/bell'
 	import IconMenu from '~icons/heroicons-outline/menu-alt-2'
 	import IconMoon from '~icons/heroicons-outline/moon'
 	import IconSearch from '~icons/heroicons-outline/search'
 	import IconSun from '~icons/heroicons-outline/sun'
-	import { SidebarBloc, SidebarToggle } from '../../bloc/SidebarBloc'
-	import { ThemeBloc, ThemeLTR, ThemeRTL, ThemeToggle } from '../../bloc/ThemeBloc'
+	import { SidebarBloc, SidebarToggle } from '/src/bloc/SidebarBloc'
+	import { ThemeBloc, ThemeLTR, ThemeRTL, ThemeToggle } from '/src/bloc/ThemeBloc'
+	import Container from '/src/di/Di'
 
 	const themeBloc = Container.get(ThemeBloc)
-	const sidebarBloc = Container.get(SidebarBloc)
-
-	let themeState = themeBloc.state
-	let themeSub = themeBloc.listen((newState) => (themeState = newState))
-
-	let sidebarState = sidebarBloc.state
-	let sidebarSub = sidebarBloc.listen((newState) => (sidebarState = newState))
+	const themeState = themeBloc.state$
 
 	function toggleDir() {
-		themeBloc.add(themeState.dir === 'ltr' ? new ThemeRTL() : new ThemeLTR())
+		themeBloc.add($themeState.dir === 'ltr' ? new ThemeRTL() : new ThemeLTR())
 	}
 
 	function toggleTheme() {
@@ -27,13 +20,8 @@
 	}
 
 	function sidebarToggle() {
-		sidebarBloc.add(new SidebarToggle())
+		Container.get(SidebarBloc).add(new SidebarToggle())
 	}
-
-	onDestroy(() => {
-		themeSub.unsubscribe()
-		sidebarSub.unsubscribe()
-	})
 </script>
 
 <div
@@ -48,14 +36,14 @@
 	<div class="navbar-end">
 		<button class="btn btn-ghost btn-circle" on:click={toggleDir}>
 			<label class="swap">
-				<input type="checkbox" on:click={toggleDir} checked={themeState.dir === 'ltr'} />
+				<input type="checkbox" on:click={toggleDir} checked={$themeState.dir === 'ltr'} />
 				<div class="swap-on">LTR</div>
 				<div class="swap-off">RTL</div>
 			</label>
 		</button>
 		<button class="btn btn-ghost btn-circle" on:click={toggleTheme}>
 			<label class="swap swap-rotate">
-				<input type="checkbox" on:change={toggleTheme} checked={themeState.theme === 'dark'} />
+				<input type="checkbox" on:change={toggleTheme} checked={$themeState.theme === 'dark'} />
 
 				<IconSun class="swap-on fill-current w-5 h-5" />
 

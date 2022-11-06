@@ -1,0 +1,19 @@
+{
+	"short_name": "App",
+	"name": "App",
+	"start_url": "/",
+	"orientation": "portrait",
+	"icons": [
+		{
+			"src": "logo.png",
+			"sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+			"type": "image/png",
+			"purpose": "any"
+		}
+	],
+	"background_color": "#0b1221",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#0b1221",
+	"description": "Erythron Exchange"
+}
