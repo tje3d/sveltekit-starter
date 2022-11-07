@@ -1,13 +1,6 @@
 import { browser, dev } from '$app/environment'
-import { filter, Observable, tap } from 'rxjs'
+import { Observable, tap } from 'rxjs'
 import type { Unsubscriber } from 'svelte/store'
-import {
-	AuthBloc,
-	AuthState,
-	AuthUserFromStorage,
-	AuthUserStorageCorrupted
-} from '/src/bloc/AuthBloc'
-import { SidebarBloc, SidebarClose, SidebarState } from '/src/bloc/SidebarBloc'
 import {
 	ThemeBloc,
 	ThemeDark,
@@ -18,71 +11,10 @@ import {
 } from '/src/bloc/ThemeBloc'
 import Container from '/src/di/Di'
 import { toUnsubscriber } from '/src/helpers/utils'
-import User from '/src/models/UserModel'
 
 let subs: Unsubscriber[] = []
 
 export default new Observable((observer) => {
-	dev && console.log('Loading Bloc')
-
-	authBlocInit()
-	themeBlocInit()
-	sidebarBlocInit()
-
-	observer.next()
-
-	return () => {
-		for (const key in subs) {
-			subs[key]()
-		}
-
-		subs = []
-	}
-})
-
-function authBlocInit() {
-	dev && console.log('Loading AuthBloc')
-
-	if (!Container.has(AuthBloc)) {
-		Container.set(AuthBloc, new AuthBloc(AuthState.new()))
-	}
-
-	if (!browser) {
-		return
-	}
-
-	// Load AuthBLOC
-	const currentUser = localStorage.getItem('user')
-
-	if (currentUser) {
-		try {
-			const user = User.fromJson(JSON.parse(currentUser))
-			Container.get(AuthBloc).add(new AuthUserFromStorage(user))
-		} catch (error) {
-			console.error(error)
-			Container.get(AuthBloc).add(new AuthUserStorageCorrupted())
-		}
-	}
-
-	// Save AuthBloc
-	subs.push(
-		toUnsubscriber(
-			Container.get(AuthBloc)
-				.state$.pipe(
-					filter((state) => !!state.eventName && state.eventName !== AuthUserFromStorage.name)
-				)
-				.subscribe((state) => {
-					if (state.user) {
-						localStorage.setItem('user', JSON.stringify(state.user))
-					} else {
-						localStorage.removeItem('user')
-					}
-				})
-		)
-	)
-}
-
-function themeBlocInit() {
 	dev && console.log('Loading ThemeBloc')
 
 	if (!Container.has(ThemeBloc)) {
@@ -140,7 +72,7 @@ function themeBlocInit() {
 			break
 	}
 
-	// Save ThemeBloc
+	// Save
 	subs.push(
 		toUnsubscriber(
 			Container.get(ThemeBloc)
@@ -164,19 +96,17 @@ function themeBlocInit() {
 				.subscribe()
 		)
 	)
-}
 
-function sidebarBlocInit() {
-	dev && console.log('Loading SidebarBloc')
+	observer.next()
 
-	const sidebarBloc = new SidebarBloc(SidebarState.new())
-	Container.set(SidebarBloc, sidebarBloc)
+	return () => {
+		for (const key in subs) {
+			subs[key]()
+		}
 
-	// Set Default State
-	if (browser && window.innerWidth <= 960) {
-		sidebarBloc.add(new SidebarClose())
+		subs = []
 	}
-}
+})
 
 function onMediaChanges(event: MediaQueryListEvent) {
 	if (event.matches) {

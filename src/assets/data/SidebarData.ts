@@ -49,7 +49,7 @@ export const sidebarData: SidebarItem[] = [
 	{
 		text: 'Chat',
 		icon: IconChat,
-		matchPattern: 'panel/chat/.*',
+		matchPattern: '/panel/chat/.*',
 		childs: [
 			{
 				text: 'Home',
@@ -73,7 +73,7 @@ export const sidebarData: SidebarItem[] = [
 	{
 		text: 'Ecommerce',
 		icon: IconShopping,
-		matchPattern: 'panel/ecommerce.*',
+		matchPattern: '/panel/ecommerce.*',
 		childs: [
 			{
 				text: 'Manage',
