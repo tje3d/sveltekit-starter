@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation'
-	import { page } from '$app/stores'
 	import { map } from 'rxjs'
-	import { onMount } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import IconChevronDown from '~icons/heroicons-outline/chevron-down'
 	import IconChevronRight from '~icons/heroicons-outline/chevron-right'
@@ -11,15 +9,16 @@
 	import logo from '/src/assets/img/logo-text.svg'
 	import male1 from '/src/assets/img/male-1.jpeg'
 	import {
-		SidebarActivesToggle,
 		SidebarBloc,
-		SidebarCalculateActives,
-		SidebarClose
+		SidebarClose,
+		SidebarResetForceActive,
+		SidebarToggleForceActiveItem
 	} from '/src/bloc/SidebarBloc'
 	import Container from '/src/di/Di'
 
 	const sidebarBloc = Container.get(SidebarBloc)
 	const state = sidebarBloc.state$
+	const actives$ = sidebarBloc.actives$
 	const isOpen = state.pipe(map((state) => state.isOpen))
 
 	function onBackdropClick() {
@@ -27,15 +26,11 @@
 	}
 
 	function onItemHasChildClick(item: SidebarItem) {
-		sidebarBloc.add(new SidebarActivesToggle(item))
+		sidebarBloc.add(new SidebarToggleForceActiveItem(item))
 	}
 
-	afterNavigate(({ from, to }) => {
-		sidebarBloc.add(new SidebarCalculateActives($page.route.id!))
-	})
-
-	onMount(() => {
-		sidebarBloc.add(new SidebarCalculateActives($page.route.id!))
+	afterNavigate(() => {
+		sidebarBloc.add(new SidebarResetForceActive())
 	})
 </script>
 
@@ -73,7 +68,7 @@
 					<li class="mb-1">
 						<a
 							class={`flex mx-3 items-center cursor-pointer justify-start py-2.5 px-4 text-sm hover:bg-white/10 rounded-lg select-none ${
-								$state.actives.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
+								$actives$.includes(item) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
 							}`}
 							href={item.href}
 							data-sveltekit-prefetch
@@ -84,7 +79,7 @@
 							<span class="flex-auto">{item.text}</span>
 
 							{#if item.childs}
-								{#if $state.actives.includes(item)}
+								{#if $actives$.includes(item)}
 									<IconChevronDown class="w-4 h-4" />
 								{:else}
 									<IconChevronRight class="w-4 h-4 transform rtl:rotate-180 rtl:rotate-z-[90deg]" />
@@ -103,15 +98,13 @@
 						</a>
 					</li>
 
-					{#if item.childs && $state.actives.includes(item)}
+					{#if item.childs && $actives$.includes(item)}
 						<ul class="py-1" transition:slide|local>
 							{#each item.childs as child}
 								<li class="mb-1">
 									<a
 										class={`flex mx-3 items-center justify-start py-2.5 px-4 pl-14 text-sm rounded-lg hover:bg-white/10 ${
-											$state.actives.includes(child)
-												? 'bg-white/10'
-												: 'opacity-75 hover:opacity-100'
+											$actives$.includes(child) ? 'bg-white/10' : 'opacity-75 hover:opacity-100'
 										}`}
 										href={child.href}
 										data-sveltekit-prefetch
