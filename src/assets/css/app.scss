@@ -1,5 +1,3 @@
-@import './base/daisyui.scss';
-
 @tailwind base;
 
 @import './base/body.scss';
@@ -8,6 +6,17 @@
 @import './base/scrollbar.scss';
 @import './base/table.scss';
 @import './base/pagination.scss';
+@import './base/checkbox.scss';
+@import './base/button.scss';
+@import './base/mask.scss';
+@import './base/badge.scss';
+@import './base/swap.scss';
+@import './base/navbar.scss';
+@import './base/dropdown.scss';
+@import './base/indicator.scss';
+@import './base/toggle.scss';
+@import './base/avatar.scss';
+@import './base/menu.scss';
 
 @tailwind components;
 

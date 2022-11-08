@@ -1,4 +1,61 @@
 .table {
+	@apply relative;
+	th:first-child {
+		@apply sticky left-0 z-[11];
+		/* because safari */
+		position: -webkit-sticky;
+	}
+}
+
+.table {
+	@apply text-left;
+	:where(th, td) {
+		@apply whitespace-nowrap p-4 align-middle;
+	}
+	&:where(:not(.table-zebra)) {
+		:where(thead, tbody, tfoot) {
+			:where(tr:not(:last-child) :where(th, td)) {
+				@apply border-b border-gray-200;
+			}
+		}
+	}
+
+	:where(thead, tfoot) {
+		:where(th, td) {
+			@apply text-xs font-bold uppercase;
+		}
+	}
+}
+
+:where(.table *:first-child) {
+	:where(*:first-child) {
+		:where(th, td) {
+			&:first-child {
+				@apply rounded-tl-lg;
+			}
+
+			&:last-child {
+				@apply rounded-tr-lg;
+			}
+		}
+	}
+}
+
+:where(.table *:last-child) {
+	:where(*:last-child) {
+		:where(th, td) {
+			&:first-child {
+				@apply rounded-bl-lg;
+			}
+
+			&:last-child {
+				@apply rounded-br-lg;
+			}
+		}
+	}
+}
+
+.table {
 	width: 100%;
 
 	thead th,

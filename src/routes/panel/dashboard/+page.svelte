@@ -16,8 +16,8 @@
 		</div>
 
 		<div class="flex space-x-2 rtl:space-x-reverse">
-			<button class="btn btn-outline rounded-3xl dark:text-gray-300">
-				<span class="flex items-center text-gray-700 dark:text-gray-300">
+			<button class="btn btn-outline rounded-3xl dark:text-gray-500">
+				<span class="flex items-center">
 					<IconSettings class="w-5 h-5 mr-2" />
 					Settings
 				</span>

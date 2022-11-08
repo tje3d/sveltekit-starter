@@ -156,7 +156,7 @@
 					<IconSearch class="w-5 h-5 absolute top-1/2 -mt-2.5 ml-4 text-gray-400" />
 					<input
 						type="text"
-						class="w-full rounded-3xl border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-[3rem] focus:border-blue-500 pl-12 bg-white dark:bg-transparent"
+						class="w-full rounded-3xl border border-gray-300 dark:border-gray-500 focus:outline-none bg-transparent shadow-sm px-4 min-h-12 focus:border-blue-500 pl-12 bg-white dark:bg-transparent"
 						placeholder="Search products"
 					/>
 				</div>
@@ -242,7 +242,7 @@
 									<IconEye class="w-4 h-4" />
 									view
 								</button>
-								<button class="btn btn-outline dark:btn-info btn-sm">
+								<button class="btn btn-outline dark:text-sky-500 btn-sm">
 									<IconPencil class="w-4 h-4" />
 									edit
 								</button>
